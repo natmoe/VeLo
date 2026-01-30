@@ -1,0 +1,12 @@
+{
+    "rewrites": [
+        {
+            "source": "/api/files",
+            "destination": "/api/files"
+        },
+        {
+            "source": "/api/zip",
+            "destination": "/api/zip"
+        }
+    ]
+}
