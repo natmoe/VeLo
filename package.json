@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "description": "Minimal file browser with font previews",
     "main": "server.js",
+    "engines": {
+        "node": "18.x"
+    },
     "scripts": {
         "start": "node server.js",
         "dev": "node server.js"
