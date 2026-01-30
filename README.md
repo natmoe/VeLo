@@ -1,37 +1,46 @@
 # VeLo
 
-A minimal, customizable file browser with font previews and markdown reader.
+**A minimal, self-hosted file browser with font previews.**
 
-## Features
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-24.x-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 
-- **Directory browsing** — Navigate folders with breadcrumb trail
-- **Image & video lightbox** — Gallery view with keyboard navigation
-- **Font folder previews** — Special `.font` folders show all styles with a slider
-- **Markdown reader** — Inline rendering of `.md` files
-- **Hover previews** — Images and fonts preview on hover
-- **Zip downloads** — Download entire font folders as zip
+---
 
-## Quick Start
+## ✨ Features
+
+- 📁 **Directory Browsing** — Navigate folders with breadcrumb trail
+- 🖼️ **Media Lightbox** — Gallery view for images & videos with keyboard navigation
+- 🔤 **Font Previews** — `.font` folders display all styles with an interactive slider
+- 📝 **Markdown Reader** — Inline rendering of `.md` files
+- 👁️ **Hover Previews** — Quick preview images and fonts on hover
+- 📦 **Zip Downloads** — Download entire font folders as a zip
+
+---
+
+## 🚀 Quick Start
+
+```bash
+git clone https://github.com/natmoe/VeLo.git
+cd VeLo
+npm install
+npm start
+```
+
+Open `http://localhost:3000` and add your files to the `files/` folder.
+
+---
+
+## 📦 Deployment
+
+### Any Node.js Host
 
 ```bash
 npm install
 npm start
 ```
 
-Then open `http://localhost:3000`
-
-Add your files to the `files/` directory.
-
-## Deployment
-
-### Any Node.js Host (Render, Railway, DigitalOcean, etc.)
-
-```bash
-npm install
-npm start
-```
-
-Set the `PORT` environment variable if needed.
+Works on **Render**, **Railway**, **Fly.io**, **DigitalOcean**, or any VPS.
 
 ### Vercel
 
@@ -42,7 +51,7 @@ vercel deploy
 ### Docker
 
 ```dockerfile
-FROM node:18-alpine
+FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm install
@@ -50,65 +59,65 @@ EXPOSE 3000
 CMD ["npm", "start"]
 ```
 
-## Customization
+---
 
-### Colors
+## 🎨 Customization
 
 Edit the CSS variables at the top of `style.css`:
 
 ```css
 :root {
-    --bg: #0c0c0c;              /* Main background */
-    --bg-elevated: #141414;     /* Cards, modals */
-    --bg-hover: #1c1c1c;        /* Hover states */
-    --border: #252525;          /* Borders */
-    --text: #f0f0f0;            /* Primary text */
-    --text-secondary: #888;     /* Secondary text */
-    --text-muted: #555;         /* Muted text */
-    --accent: #6ee7b7;          /* Accent color */
+    --bg: #0c0c0c;           /* Background */
+    --accent: #6ee7b7;       /* Accent color */
+    --text: #f0f0f0;         /* Text color */
 }
 ```
 
-### File Type Colors
+**File type indicator colors:**
 
 ```css
 .file-row.folder .file-indicator { background: var(--accent); }
 .file-row.image .file-indicator { background: #f472b6; }
 .file-row.video .file-indicator { background: #a78bfa; }
-.file-row.audio .file-indicator { background: #facc15; }
 .file-row.font .file-indicator { background: #38bdf8; }
-.file-row.text .file-indicator { background: #facc15; }
 ```
 
-## Font Folders
+---
 
-Create folders ending in `.font` to enable font preview:
+## 🔤 Font Folders
+
+Create folders ending in `.font` to enable the font preview feature:
 
 ```
 files/
-├── MyFont.font/
-│   ├── MyFont-Regular.otf
-│   ├── MyFont-Bold.otf
-│   └── MyFont-Italic.otf
+└── MyFont.font/
+    ├── MyFont-Regular.otf
+    ├── MyFont-Bold.otf
+    └── MyFont-Italic.otf
 ```
 
-When clicked:
-- Opens a preview modal with sample text
-- Slider switches between font styles
-- Download single font or zip the entire folder
+Click to open an interactive preview with:
+- Sample text at multiple sizes
+- Slider to switch between styles
+- Download single font or zip all
 
-## Project Structure
+---
+
+## 📁 Project Structure
 
 ```
-├── server.js       # Express server (for Node.js hosts)
-├── api/            # Vercel serverless functions
+├── server.js       # Express server
+├── index.html      # Main page
+├── script.js       # Frontend logic
+├── style.css       # Styles
 ├── files/          # Your files go here
-├── index.html
-├── script.js
-├── style.css
-└── package.json
+├── package.json
+├── vercel.json     # Vercel config (optional)
+└── LICENSE
 ```
 
-## License
+---
 
-MIT
+## 📄 License
+
+[MIT](LICENSE) © natmoe
