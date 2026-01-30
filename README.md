@@ -17,7 +17,7 @@
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 git clone https://github.com/natmoe/VeLo.git
@@ -30,7 +30,7 @@ Open `http://localhost:3000` and add your files to the `files/` folder.
 
 ---
 
-## 📦 Deployment
+## Deployment
 
 ### Any Node.js Host
 
@@ -60,7 +60,7 @@ CMD ["npm", "start"]
 
 ---
 
-## 🎨 Customization
+## Customization
 
 Edit the CSS variables at the top of `style.css`:
 
@@ -83,7 +83,7 @@ Edit the CSS variables at the top of `style.css`:
 
 ---
 
-## 🔤 Font Folders
+## Font Folders
 
 Create folders ending in `.font` to enable the font preview feature:
 
