@@ -7,13 +7,12 @@
 
 ---
 
-## ✨ Features
+## Features
 
-- 📁 **Directory Browsing** — Navigate folders with breadcrumb trail
-- 🖼️ **Media Lightbox** — Gallery view for images & videos with keyboard navigation
-- 🔤 **Font Previews** — `.font` folders display all styles with an interactive slider
+- **Browsing** — Navigate folders in a nice text-based view.
+- **Media** — Images and videos have a nice previe and a gallery-based view.
+- **Font Previews** — To show multiple versions of a font, put them in a folder ending in `.font` to have them render as a collective preview.
 - 📝 **Markdown Reader** — Inline rendering of `.md` files
-- 👁️ **Hover Previews** — Quick preview images and fonts on hover
 - 📦 **Zip Downloads** — Download entire font folders as a zip
 
 ---
