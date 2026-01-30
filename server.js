@@ -8,8 +8,12 @@ const PORT = process.env.PORT || 3000;
 
 const filesDir = path.join(__dirname, 'files');
 
-app.use(express.static(__dirname));
 app.use('/files', express.static(filesDir));
+app.use(express.static(__dirname));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.get('/api/files', (req, res) => {
     const requestPath = req.query.path || '';
