@@ -1,12 +1,9 @@
 {
-    "rewrites": [
-        {
-            "source": "/api/files",
-            "destination": "/api/files"
-        },
-        {
-            "source": "/api/zip",
-            "destination": "/api/zip"
+    "buildCommand": "",
+    "outputDirectory": ".",
+    "functions": {
+        "api/*.js": {
+            "runtime": "@vercel/node@3"
         }
-    ]
+    }
 }

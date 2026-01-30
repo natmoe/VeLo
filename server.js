@@ -8,10 +8,6 @@ const PORT = process.env.PORT || 3000;
 const rootDir = __dirname;
 const filesDir = path.join(rootDir, 'files');
 
-if (!fs.existsSync(filesDir)) {
-    fs.mkdirSync(filesDir, { recursive: true });
-}
-
 app.get('/', (req, res) => {
     res.sendFile(path.join(rootDir, 'index.html'));
 });
