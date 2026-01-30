@@ -1,6 +1,6 @@
-# File Viewer
+# VeLo
 
-A minimal, elegant file browser with image lightbox, font previews, and markdown reader. Designed for Vercel deployment.
+A minimal customizable online file viewer, markdown viewer, and more. 
 
 ![Preview](https://img.shields.io/badge/deploy-vercel-black?style=flat-square)
 
