@@ -12,8 +12,8 @@
 - **Browsing** — Navigate folders in a nice text-based view.
 - **Media** — Images and videos have a nice previe and a gallery-based view.
 - **Font Previews** — To show multiple versions of a font, put them in a folder ending in `.font` to have them render as a collective preview.
-- 📝 **Markdown Reader** — Inline rendering of `.md` files
-- 📦 **Zip Downloads** — Download entire font folders as a zip
+- **Markdown Reader** — Inline rendering of `.md` files
+- **Zip Downloads** — Download entire font folders as a zip
 
 ---
 
