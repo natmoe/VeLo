@@ -5,15 +5,22 @@ const archiver = require('archiver');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-const filesDir = path.join(__dirname, 'files');
-
-app.use('/files', express.static(filesDir));
-app.use(express.static(__dirname));
+const rootDir = __dirname;
+const filesDir = path.join(rootDir, 'files');
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(rootDir, 'index.html'));
 });
+
+app.get('/style.css', (req, res) => {
+    res.type('text/css').sendFile(path.join(rootDir, 'style.css'));
+});
+
+app.get('/script.js', (req, res) => {
+    res.type('application/javascript').sendFile(path.join(rootDir, 'script.js'));
+});
+
+app.use('/files', express.static(filesDir));
 
 app.get('/api/files', (req, res) => {
     const requestPath = req.query.path || '';
