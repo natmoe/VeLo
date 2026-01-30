@@ -1,0 +1,15 @@
+{
+    "buildCommand": "",
+    "outputDirectory": ".",
+    "rewrites": [
+        {
+            "source": "/api/files",
+            "destination": "/api/files.js"
+        }
+    ],
+    "functions": {
+        "api/files.js": {
+            "includeFiles": "files/**"
+        }
+    }
+}

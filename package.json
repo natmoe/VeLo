@@ -1,0 +1,6 @@
+{
+    "private": true,
+    "dependencies": {
+        "archiver": "^6.0.1"
+    }
+}

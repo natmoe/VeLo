@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Files</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <nav id="breadcrumb" class="breadcrumb"></nav>
+            <div id="stats" class="stats"></div>
+        </header>
+
+        <main id="file-list" class="file-list">
+            <div class="loading">Loading...</div>
+        </main>
+    </div>
+
+    <!-- Lightbox for images/videos -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-backdrop"></div>
+        <div class="lightbox-container">
+            <button class="lightbox-nav prev" id="lightbox-prev">‹</button>
+            <div class="lightbox-content">
+                <div id="lightbox-media"></div>
+            </div>
+            <button class="lightbox-nav next" id="lightbox-next">›</button>
+        </div>
+        <div class="lightbox-footer">
+            <span id="lightbox-name"></span>
+            <div class="lightbox-actions">
+                <a id="lightbox-download" href="#" download class="btn">Download</a>
+                <button id="lightbox-close" class="btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Markdown/Text Reader -->
+    <div id="reader" class="reader">
+        <div class="reader-backdrop"></div>
+        <div class="reader-window">
+            <div class="reader-header">
+                <span id="reader-title"></span>
+                <div class="reader-actions">
+                    <a id="reader-download" href="#" download class="btn-icon" title="Download">↓</a>
+                    <button id="reader-close" class="btn-icon" title="Close">×</button>
+                </div>
+            </div>
+            <div id="reader-content" class="reader-content"></div>
+        </div>
+    </div>
+
+    <!-- Font Viewer -->
+    <div id="font-viewer" class="font-viewer">
+        <div class="font-viewer-backdrop"></div>
+        <div class="font-viewer-window">
+            <div class="font-viewer-header">
+                <span id="font-viewer-title"></span>
+                <button id="font-viewer-close" class="btn-icon" title="Close">×</button>
+            </div>
+            <div class="font-viewer-content">
+                <div id="font-preview" class="font-preview">
+                    <div class="font-sample">Aa Bb Cc Dd Ee Ff Gg</div>
+                    <div class="font-sample-small">The quick brown fox jumps over the lazy dog</div>
+                    <div class="font-sample-chars">
+                        ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 !@#$%^&*()</div>
+                </div>
+                <div class="font-controls">
+                    <div class="font-slider-container">
+                        <span id="font-style-name" class="font-style-name">Regular</span>
+                        <input type="range" id="font-slider" class="font-slider" min="0" max="0" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="font-viewer-footer">
+                <span id="font-count"></span>
+                <div class="font-actions">
+                    <button id="font-download-single" class="btn">Download Font</button>
+                    <button id="font-download-all" class="btn">Download All (.zip)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hover Preview -->
+    <div id="preview" class="preview"></div>
+
+    <script src="/script.js"></script>
+</body>
+
+</html>
