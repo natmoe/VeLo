@@ -1,8 +1,6 @@
-// Configuration
 const API_ENDPOINT = '/api/files';
 const FILES_PATH = '/files';
 
-// File type definitions
 const FILE_TYPES = {
     image: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico', 'avif'],
     video: ['mp4', 'webm', 'mov', 'ogv'],
@@ -12,7 +10,6 @@ const FILE_TYPES = {
     code: ['js', 'ts', 'py', 'rb', 'go', 'rs', 'c', 'cpp', 'h', 'java', 'php', 'html', 'css', 'scss']
 };
 
-// State
 let currentPath = '';
 let mediaItems = [];
 let currentMediaIndex = 0;
@@ -20,7 +17,6 @@ let fontFolderFonts = [];
 let currentFontIndex = 0;
 let currentFontFolderPath = '';
 
-// DOM Elements
 const elements = {
     fileList: document.getElementById('file-list'),
     breadcrumb: document.getElementById('breadcrumb'),
@@ -49,7 +45,6 @@ const elements = {
     fontDownloadAll: document.getElementById('font-download-all')
 };
 
-// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     currentPath = decodeURIComponent(window.location.hash.slice(1));
     loadDirectory(currentPath);
@@ -59,28 +54,23 @@ document.addEventListener('DOMContentLoaded', () => {
         loadDirectory(currentPath);
     });
 
-    // Lightbox events
     document.querySelector('.lightbox-backdrop').addEventListener('click', closeLightbox);
     elements.lightboxClose.addEventListener('click', closeLightbox);
     elements.lightboxPrev.addEventListener('click', () => navigateMedia(-1));
     elements.lightboxNext.addEventListener('click', () => navigateMedia(1));
 
-    // Reader events
     document.querySelector('.reader-backdrop').addEventListener('click', closeReader);
     elements.readerClose.addEventListener('click', closeReader);
 
-    // Font viewer events
     document.querySelector('.font-viewer-backdrop').addEventListener('click', closeFontViewer);
     elements.fontViewerClose.addEventListener('click', closeFontViewer);
     elements.fontSlider.addEventListener('input', handleFontSlider);
     elements.fontDownloadSingle.addEventListener('click', downloadCurrentFont);
     elements.fontDownloadAll.addEventListener('click', downloadAllFonts);
 
-    // Keyboard navigation
     document.addEventListener('keydown', handleKeyboard);
 });
 
-// Load directory
 async function loadDirectory(path) {
     elements.fileList.innerHTML = '<div class="loading">Loading...</div>';
 
@@ -97,7 +87,6 @@ async function loadDirectory(path) {
         renderBreadcrumb(data.path);
         renderStats(data.stats);
 
-        // Cache media items for gallery navigation
         mediaItems = data.items.filter(item =>
             FILE_TYPES.image.includes(item.extension) ||
             FILE_TYPES.video.includes(item.extension)
@@ -108,12 +97,10 @@ async function loadDirectory(path) {
     }
 }
 
-// Check if folder is a font folder
 function isFontFolder(item) {
     return item.isDirectory && item.name.endsWith('.font');
 }
 
-// Get file type class
 function getTypeClass(item) {
     if (isFontFolder(item)) return 'fontFolder';
     if (item.isDirectory) return 'folder';
@@ -123,11 +110,9 @@ function getTypeClass(item) {
     return 'file';
 }
 
-// Render file list
 function renderFileList(data) {
     elements.fileList.innerHTML = '';
 
-    // Parent directory link (only if not at root)
     if (data.parent !== null && data.path !== '') {
         const parentRow = createFileRow({
             name: '..',
@@ -143,20 +128,16 @@ function renderFileList(data) {
         return;
     }
 
-    // Sort: text files first, then folders, then others alphabetically
     const sortedItems = [...data.items].sort((a, b) => {
         const aIsText = FILE_TYPES.text.includes(a.extension) || FILE_TYPES.code.includes(a.extension);
         const bIsText = FILE_TYPES.text.includes(b.extension) || FILE_TYPES.code.includes(b.extension);
 
-        // Text files first
         if (aIsText && !bIsText) return -1;
         if (!aIsText && bIsText) return 1;
 
-        // Then folders
         if (a.isDirectory && !b.isDirectory) return -1;
         if (!a.isDirectory && b.isDirectory) return 1;
 
-        // Then alphabetically
         return a.name.localeCompare(b.name);
     });
 
@@ -165,7 +146,6 @@ function renderFileList(data) {
     });
 }
 
-// Create file row element
 function createFileRow(item, isParent = false) {
     const typeClass = getTypeClass(item);
 
@@ -177,11 +157,9 @@ function createFileRow(item, isParent = false) {
     const isText = FILE_TYPES.text.includes(item.extension) || FILE_TYPES.code.includes(item.extension);
     const isFont = FILE_TYPES.font.includes(item.extension);
 
-    // Name cell
     const nameCell = document.createElement('div');
     nameCell.className = 'file-name';
 
-    // Color indicator instead of icon
     const indicator = document.createElement('span');
     indicator.className = 'file-indicator';
 
@@ -208,7 +186,6 @@ function createFileRow(item, isParent = false) {
         }
     });
 
-    // Hover preview for images and fonts
     if (isImage || isFont) {
         link.addEventListener('mouseenter', (e) => showPreview(item, e, isFont));
         link.addEventListener('mouseleave', hidePreview);
@@ -219,13 +196,11 @@ function createFileRow(item, isParent = false) {
     nameCell.appendChild(link);
     row.appendChild(nameCell);
 
-    // Size cell
     const sizeCell = document.createElement('div');
     sizeCell.className = 'file-size';
     sizeCell.textContent = item.isDirectory ? '—' : formatSize(item.size);
     row.appendChild(sizeCell);
 
-    // Date cell
     const dateCell = document.createElement('div');
     dateCell.className = 'file-date';
     dateCell.textContent = item.modified ? formatDate(item.modified) : '—';
@@ -234,11 +209,9 @@ function createFileRow(item, isParent = false) {
     return row;
 }
 
-// Breadcrumb
 function renderBreadcrumb(path) {
     elements.breadcrumb.innerHTML = '';
 
-    // Root
     const root = document.createElement('span');
     root.className = 'crumb' + (!path ? ' active' : '');
     root.textContent = 'files';
@@ -261,7 +234,6 @@ function renderBreadcrumb(path) {
     }
 }
 
-// Stats
 function renderStats(stats) {
     if (!stats) {
         elements.stats.textContent = '';
@@ -275,12 +247,10 @@ function renderStats(stats) {
     elements.stats.textContent = parts.join(' · ');
 }
 
-// Navigation
 function navigateTo(path) {
     window.location.hash = path;
 }
 
-// Lightbox
 function openLightbox(item) {
     currentMediaIndex = mediaItems.findIndex(m => m.path === item.path);
     showMedia(item);
@@ -328,7 +298,6 @@ function updateLightboxNav() {
     elements.lightboxNext.disabled = currentMediaIndex >= mediaItems.length - 1;
 }
 
-// Reader
 async function openReader(item) {
     const url = `${FILES_PATH}/${item.path}`;
 
@@ -357,7 +326,6 @@ function closeReader() {
     document.body.style.overflow = '';
 }
 
-// Markdown parser
 function parseMarkdown(text) {
     return text
         .replace(/&/g, '&amp;')
@@ -402,7 +370,6 @@ function escapeHtml(text) {
         .replace(/\n/g, '<br>');
 }
 
-// Hover Preview
 async function showPreview(item, event, isFont = false) {
     const url = `${FILES_PATH}/${item.path}`;
 
@@ -457,7 +424,6 @@ function updatePreviewPosition(event) {
     elements.preview.style.top = `${Math.max(8, y)}px`;
 }
 
-// Font Viewer
 async function openFontViewer(item) {
     currentFontFolderPath = item.path;
     const displayName = item.name.replace(/\.font$/, '');
@@ -467,14 +433,12 @@ async function openFontViewer(item) {
     document.body.style.overflow = 'hidden';
 
     try {
-        // Fetch folder contents
         const url = `${API_ENDPOINT}?path=${encodeURIComponent(item.path)}&t=${Date.now()}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error('Failed to load folder');
 
         const data = await response.json();
 
-        // Filter font files
         fontFolderFonts = data.items.filter(f =>
             FILE_TYPES.font.includes(f.extension)
         );
@@ -484,14 +448,12 @@ async function openFontViewer(item) {
             return;
         }
 
-        // Setup slider
         currentFontIndex = 0;
         elements.fontSlider.min = 0;
         elements.fontSlider.max = fontFolderFonts.length - 1;
         elements.fontSlider.value = 0;
         elements.fontCount.textContent = `${fontFolderFonts.length} style${fontFolderFonts.length !== 1 ? 's' : ''}`;
 
-        // Load first font
         await loadFontAndUpdate(0);
 
     } catch (error) {
@@ -501,14 +463,11 @@ async function openFontViewer(item) {
 
 async function loadFontAndUpdate(index) {
     const fontItem = fontFolderFonts[index];
-    // Properly encode each path segment
     const encodedPath = fontItem.path.split('/').map(segment => encodeURIComponent(segment)).join('/');
     const fontUrl = `${FILES_PATH}/${encodedPath}`;
     const fontName = `fontFolder-${Date.now()}-${index}`;
 
-    // Extract style name from filename
     let styleName = fontItem.name.replace(/\.(otf|ttf|woff|woff2)$/i, '');
-    // Try to extract weight/style from name
     const parts = styleName.split(/[-_]/);
     if (parts.length > 1) {
         styleName = parts.slice(1).join(' ');
@@ -522,7 +481,6 @@ async function loadFontAndUpdate(index) {
         await font.load();
         document.fonts.add(font);
 
-        // Apply to preview
         const samples = elements.fontPreview.querySelectorAll('.font-sample, .font-sample-small, .font-sample-chars');
         samples.forEach(el => el.style.fontFamily = `'${fontName}'`);
     } catch (err) {
@@ -559,12 +517,10 @@ function downloadCurrentFont() {
 
 function downloadAllFonts() {
     if (!currentFontFolderPath) return;
-    // Trigger zip download via API
     const zipUrl = `/api/zip?path=${encodeURIComponent(currentFontFolderPath)}`;
     window.location.href = zipUrl;
 }
 
-// Keyboard handling
 function handleKeyboard(e) {
     if (elements.lightbox.classList.contains('active')) {
         if (e.key === 'Escape') closeLightbox();
@@ -592,7 +548,6 @@ function handleKeyboard(e) {
     }
 }
 
-// File download
 function downloadFile(item) {
     const a = document.createElement('a');
     a.href = `${FILES_PATH}/${item.path}`;
@@ -602,7 +557,6 @@ function downloadFile(item) {
     document.body.removeChild(a);
 }
 
-// Utilities
 function formatSize(bytes) {
     if (!bytes || bytes === 0) return '0 B';
     const units = ['B', 'KB', 'MB', 'GB', 'TB'];

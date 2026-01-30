@@ -1,3 +1,6 @@
+/* ===========================================
+   CUSTOMIZE COLORS HERE
+   =========================================== */
 :root {
     --bg: #0c0c0c;
     --bg-elevated: #141414;
@@ -48,14 +51,12 @@ a {
     text-decoration: none;
 }
 
-/* Container */
 .container {
     max-width: 900px;
     margin: 0 auto;
     padding: 48px 24px;
 }
 
-/* Header */
 header {
     display: flex;
     justify-content: space-between;
@@ -65,7 +66,6 @@ header {
     border-bottom: 1px solid var(--border-subtle);
 }
 
-/* Breadcrumb */
 .breadcrumb {
     font-family: var(--font-mono);
     font-size: 13px;
@@ -100,7 +100,6 @@ header {
     display: none;
 }
 
-/* Stats */
 .stats {
     font-size: 12px;
     color: var(--text-muted);
@@ -108,7 +107,6 @@ header {
     letter-spacing: 0.02em;
 }
 
-/* File List */
 .file-list {
     display: flex;
     flex-direction: column;
@@ -127,7 +125,6 @@ header {
     color: #f87171;
 }
 
-/* File Row */
 .file-row {
     display: grid;
     grid-template-columns: 1fr 72px 88px;
@@ -143,7 +140,6 @@ header {
     background: var(--bg-hover);
 }
 
-/* File Name */
 .file-name {
     display: flex;
     align-items: center;
@@ -159,7 +155,6 @@ header {
     opacity: 0.7;
 }
 
-/* Type-based colors */
 .file-row.folder .file-indicator {
     background: var(--accent);
 }
@@ -196,6 +191,10 @@ header {
     background: #f87171;
 }
 
+.file-row.fontFolder .file-indicator {
+    background: #38bdf8;
+}
+
 .file-row .file-indicator {
     background: var(--text-muted);
 }
@@ -219,6 +218,10 @@ header {
     color: var(--accent);
 }
 
+.file-row.fontFolder .file-link {
+    color: #38bdf8;
+}
+
 .file-size,
 .file-date {
     font-family: var(--font-mono);
@@ -238,7 +241,6 @@ header {
     color: var(--text-muted);
 }
 
-/* Buttons */
 .btn {
     background: var(--bg-elevated);
     border: 1px solid var(--border);
@@ -277,7 +279,6 @@ header {
     background: var(--bg-hover);
 }
 
-/* Lightbox */
 .lightbox {
     position: fixed;
     inset: 0;
@@ -388,7 +389,6 @@ header {
     gap: 8px;
 }
 
-/* Reader */
 .reader {
     position: fixed;
     inset: 0;
@@ -457,7 +457,6 @@ header {
     color: var(--text);
 }
 
-/* Markdown Styles */
 .reader-content h1,
 .reader-content h2,
 .reader-content h3 {
@@ -565,7 +564,6 @@ header {
     font-weight: 600;
 }
 
-/* Hover Preview */
 .preview {
     position: fixed;
     z-index: 500;
@@ -606,7 +604,6 @@ header {
     font-family: var(--font-mono);
 }
 
-/* Font Viewer */
 .font-viewer {
     position: fixed;
     inset: 0;
@@ -774,16 +771,6 @@ header {
     gap: 8px;
 }
 
-/* Font folder indicator */
-.file-row.fontFolder .file-indicator {
-    background: #38bdf8;
-}
-
-.file-row.fontFolder .file-link {
-    color: #38bdf8;
-}
-
-/* Scrollbar */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -802,7 +789,6 @@ header {
     background: var(--text-muted);
 }
 
-/* Responsive */
 @media (max-width: 640px) {
     .container {
         padding: 24px 16px;
