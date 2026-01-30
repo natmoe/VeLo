@@ -102,7 +102,7 @@ Click to open an interactive preview with:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ├── server.js       # Express server
@@ -117,6 +117,6 @@ Click to open an interactive preview with:
 
 ---
 
-## 📄 License
+## License
 
 [MIT](LICENSE) © natmoe
