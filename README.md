@@ -1,6 +1,6 @@
 # VeLo
 
-**A minimal, self-hosted file browser with font previews.**
+**A minimal, self-hosted file browser**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-24.x-339933?logo=node.js&logoColor=white)](https://nodejs.org)
