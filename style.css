@@ -96,7 +96,8 @@ header {
     color: var(--border);
 }
 
-.crumb:last-child::after {
+.crumb:last-child::after,
+.crumb.no-separator::after {
     display: none;
 }
 
@@ -284,7 +285,8 @@ header {
     inset: 0;
     z-index: 1000;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
@@ -299,94 +301,50 @@ header {
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.95);
+    cursor: pointer;
 }
 
 .lightbox-container {
-    flex: 1;
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    z-index: 1;
-    padding: 24px;
+    pointer-events: none;
 }
 
 .lightbox-content {
-    max-width: 90vw;
-    max-height: 80vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    gap: 24px;
+    pointer-events: auto;
 }
 
 .lightbox-content img,
 .lightbox-content video {
-    max-width: 100%;
+    max-width: 90vw;
     max-height: 80vh;
     border-radius: var(--radius);
     box-shadow: var(--shadow-lg);
 }
 
-.lightbox-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    color: var(--text);
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    font-size: 20px;
-    cursor: pointer;
-    z-index: 2;
-    transition: all var(--transition);
+.lightbox-links {
     display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.lightbox-nav:hover {
-    background: var(--bg-hover);
-    border-color: var(--text-muted);
-    transform: translateY(-50%) scale(1.05);
-}
-
-.lightbox-nav.prev {
-    left: 24px;
-}
-
-.lightbox-nav.next {
-    right: 24px;
-}
-
-.lightbox-nav:disabled {
-    opacity: 0.2;
-    cursor: default;
-    transform: translateY(-50%);
-}
-
-.lightbox-footer {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 32px;
-    background: var(--bg-elevated);
-    border-top: 1px solid var(--border-subtle);
-}
-
-.lightbox-footer span {
+    gap: 24px;
     font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-secondary);
-    letter-spacing: -0.01em;
+    font-size: 13px;
 }
 
-.lightbox-actions {
-    display: flex;
-    gap: 8px;
+.lightbox-link {
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color var(--transition);
+    text-decoration: none;
+}
+
+.lightbox-link:hover {
+    color: var(--text);
 }
 
 .reader {

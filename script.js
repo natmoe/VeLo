@@ -17,8 +17,6 @@ const FILE_TYPES = {
 };
 
 let currentPath = '';
-let mediaItems = [];
-let currentMediaIndex = 0;
 let fontFolderFonts = [];
 let currentFontIndex = 0;
 let currentFontFolderPath = '';
@@ -29,11 +27,8 @@ const elements = {
     stats: document.getElementById('stats'),
     lightbox: document.getElementById('lightbox'),
     lightboxMedia: document.getElementById('lightbox-media'),
-    lightboxName: document.getElementById('lightbox-name'),
+    lightboxBack: document.getElementById('lightbox-back'),
     lightboxDownload: document.getElementById('lightbox-download'),
-    lightboxClose: document.getElementById('lightbox-close'),
-    lightboxPrev: document.getElementById('lightbox-prev'),
-    lightboxNext: document.getElementById('lightbox-next'),
     reader: document.getElementById('reader'),
     readerTitle: document.getElementById('reader-title'),
     readerContent: document.getElementById('reader-content'),
@@ -61,9 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.querySelector('.lightbox-backdrop').addEventListener('click', closeLightbox);
-    elements.lightboxClose.addEventListener('click', closeLightbox);
-    elements.lightboxPrev.addEventListener('click', () => navigateMedia(-1));
-    elements.lightboxNext.addEventListener('click', () => navigateMedia(1));
+    elements.lightboxBack.addEventListener('click', closeLightbox);
 
     document.querySelector('.reader-backdrop').addEventListener('click', closeReader);
     elements.readerClose.addEventListener('click', closeReader);
@@ -92,11 +85,6 @@ async function loadDirectory(path) {
         renderFileList(data);
         renderBreadcrumb(data.path);
         renderStats(data.stats);
-
-        mediaItems = data.items.filter(item =>
-            FILE_TYPES.image.includes(item.extension) ||
-            FILE_TYPES.video.includes(item.extension)
-        );
 
     } catch (error) {
         elements.fileList.innerHTML = `<div class="error">${error.message}</div>`;
@@ -220,7 +208,7 @@ function renderBreadcrumb(path) {
     elements.breadcrumb.innerHTML = '';
 
     const root = document.createElement('span');
-    root.className = 'crumb' + (!path ? ' active' : '');
+    root.className = 'crumb' + (!path ? ' active' : '') + (ROOT_NAME === '/' ? ' no-separator' : '');
     root.textContent = ROOT_NAME;
     root.addEventListener('click', () => navigateTo(''));
     elements.breadcrumb.appendChild(root);
@@ -259,11 +247,9 @@ function navigateTo(path) {
 }
 
 function openLightbox(item) {
-    currentMediaIndex = mediaItems.findIndex(m => m.path === item.path);
     showMedia(item);
     elements.lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
-    updateLightboxNav();
 }
 
 function showMedia(item) {
@@ -274,7 +260,6 @@ function showMedia(item) {
         ? `<video src="${url}" controls autoplay></video>`
         : `<img src="${url}" alt="${item.name}">`;
 
-    elements.lightboxName.textContent = item.name;
     elements.lightboxDownload.href = url;
     elements.lightboxDownload.download = item.name;
 }
@@ -291,19 +276,7 @@ function closeLightbox() {
     }, 250);
 }
 
-function navigateMedia(direction) {
-    const newIndex = currentMediaIndex + direction;
-    if (newIndex >= 0 && newIndex < mediaItems.length) {
-        currentMediaIndex = newIndex;
-        showMedia(mediaItems[currentMediaIndex]);
-        updateLightboxNav();
-    }
-}
 
-function updateLightboxNav() {
-    elements.lightboxPrev.disabled = currentMediaIndex <= 0;
-    elements.lightboxNext.disabled = currentMediaIndex >= mediaItems.length - 1;
-}
 
 async function openReader(item) {
     const url = `${FILES_PATH}/${item.path}`;
@@ -531,8 +504,6 @@ function downloadAllFonts() {
 function handleKeyboard(e) {
     if (elements.lightbox.classList.contains('active')) {
         if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft') navigateMedia(-1);
-        if (e.key === 'ArrowRight') navigateMedia(1);
         return;
     }
 
