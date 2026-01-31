@@ -72,6 +72,14 @@ Edit the CSS variables at the top of `style.css`:
 }
 ```
 
+**Root folder name:**
+
+Edit the `ROOT_NAME` constant at the top of `script.js` to customize how the root breadcrumb appears:
+
+```javascript
+const ROOT_NAME = '/';  // Change to 'files', 'archive', 'home', etc.
+```
+
 **File type indicator colors:**
 
 ```css

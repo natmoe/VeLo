@@ -1,6 +1,12 @@
 const API_ENDPOINT = '/api/files';
 const FILES_PATH = '/files';
 
+// ===========================================
+// CUSTOMIZATION: Change the root folder display name
+// Examples: '/', 'files', 'archive', 'home'
+// ===========================================
+const ROOT_NAME = '/';
+
 const FILE_TYPES = {
     image: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico', 'avif'],
     video: ['mp4', 'webm', 'mov', 'ogv'],
@@ -113,7 +119,8 @@ function getTypeClass(item) {
 function renderFileList(data) {
     elements.fileList.innerHTML = '';
 
-    if (data.parent !== null && data.path !== '') {
+    // Only show ".." when we're in a subdirectory (path is not empty)
+    if (data.path && data.path !== '') {
         const parentRow = createFileRow({
             name: '..',
             path: data.parent || '',
@@ -214,7 +221,7 @@ function renderBreadcrumb(path) {
 
     const root = document.createElement('span');
     root.className = 'crumb' + (!path ? ' active' : '');
-    root.textContent = 'files';
+    root.textContent = ROOT_NAME;
     root.addEventListener('click', () => navigateTo(''));
     elements.breadcrumb.appendChild(root);
 
