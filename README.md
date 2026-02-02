@@ -45,9 +45,9 @@ All options are at the top of `script.js`:
 | `ROOT_NAME` | Breadcrumb root label (`'/'`, `'files'`, etc.) |
 | `FILE_EXTENSION_COLOR` | `1` = extension colored, `2` = both colored, `3` = both white |
 | `PAGE_SIZE` | Files per page (`10` default, `0` = show all) |
-| `TYPE_COLORS` | Color per file type |
-| `TYPE_ICONS` | SVG icon per file type (set to `null` for colored square) |
-| `ICONS_PATH` | Path to icon SVGs (`/icons` default) |
+| `TYPE_COLORS` | Color per file type category |
+| `TYPE_ICONS` | Default SVG icon per file type (set to `null` for colored square) |
+| `EXTENSION_ICONS` | Override icons for specific extensions (e.g., `{ 'pdf': 'pdf.svg' }`) |
 
 **Theme colors** in `style.css`:
 

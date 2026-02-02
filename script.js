@@ -40,23 +40,31 @@ const TYPE_COLORS = {
 // ===========================================
 // CUSTOMIZATION: Icon settings
 // ICONS_PATH = base path where icon SVGs are stored
-// TYPE_ICONS = mapping of file types to icon filenames
-// Set any icon to null to use the default colored square
+// TYPE_ICONS = default icon per file type category
+// EXTENSION_ICONS = override icon for specific file extensions
+// Set any icon to null to use the colored square fallback
 // ===========================================
 const ICONS_PATH = '/icons';
 
+// Default icons by file type category
 const TYPE_ICONS = {
     folder: 'folder.svg',
     fontFolder: 'fonts.svg',
     image: 'image.svg',
     video: 'video.svg',
-    audio: null,           // uses colored square fallback
+    audio: null,
     font: 'fonts.svg',
     text: 'document.svg',
     code: 'document.svg',
-    archive: null,         // uses colored square fallback
+    archive: null,
     document: 'document.svg',
     file: 'document.svg'
+};
+
+// Override icons for specific file extensions (optional)
+// Example: { 'mp3': 'audio.svg', 'pdf': 'pdf.svg', 'zip': 'archive.svg' }
+const EXTENSION_ICONS = {
+    // Add your custom extension icons here
 };
 
 const FILE_TYPES = {
@@ -256,7 +264,8 @@ function createFileRow(item, isParent = false) {
 
     // Get the type color and icon for this item
     const typeColor = TYPE_COLORS[typeClass] || TYPE_COLORS.file;
-    const iconFile = TYPE_ICONS[typeClass];
+    // Check for extension-specific icon first, then fall back to type icon
+    const iconFile = (item.extension && EXTENSION_ICONS[item.extension]) || TYPE_ICONS[typeClass];
 
     // Create indicator - either SVG icon or colored square
     let indicator;
