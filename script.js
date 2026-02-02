@@ -37,6 +37,28 @@ const TYPE_COLORS = {
     file: 'var(--text-muted)'
 };
 
+// ===========================================
+// CUSTOMIZATION: Icon settings
+// ICONS_PATH = base path where icon SVGs are stored
+// TYPE_ICONS = mapping of file types to icon filenames
+// Set any icon to null to use the default colored square
+// ===========================================
+const ICONS_PATH = '/icons';
+
+const TYPE_ICONS = {
+    folder: 'folder.svg',
+    fontFolder: 'fonts.svg',
+    image: 'image.svg',
+    video: 'video.svg',
+    audio: null,           // uses colored square fallback
+    font: 'fonts.svg',
+    text: 'document.svg',
+    code: 'document.svg',
+    archive: null,         // uses colored square fallback
+    document: 'document.svg',
+    file: 'document.svg'
+};
+
 const FILE_TYPES = {
     image: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico', 'avif'],
     video: ['mp4', 'webm', 'mov', 'ogv'],
@@ -232,15 +254,26 @@ function createFileRow(item, isParent = false) {
     const nameCell = document.createElement('div');
     nameCell.className = 'file-name';
 
-    const indicator = document.createElement('span');
-    indicator.className = 'file-indicator';
-
-    // Get the type color for this item
+    // Get the type color and icon for this item
     const typeColor = TYPE_COLORS[typeClass] || TYPE_COLORS.file;
+    const iconFile = TYPE_ICONS[typeClass];
 
-    // Apply colored indicator based on mode (modes 1 and 2 use color)
-    if (FILE_EXTENSION_COLOR === 1 || FILE_EXTENSION_COLOR === 2) {
-        indicator.style.background = typeColor;
+    // Create indicator - either SVG icon or colored square
+    let indicator;
+    if (iconFile) {
+        indicator = document.createElement('img');
+        indicator.className = 'file-icon';
+        indicator.src = `${ICONS_PATH}/${iconFile}`;
+        indicator.alt = '';
+        // Apply color tinting via CSS filter (set as CSS variable)
+        indicator.style.setProperty('--icon-color', typeColor);
+    } else {
+        indicator = document.createElement('span');
+        indicator.className = 'file-indicator';
+        // Apply colored indicator based on mode (modes 1 and 2 use color)
+        if (FILE_EXTENSION_COLOR === 1 || FILE_EXTENSION_COLOR === 2) {
+            indicator.style.background = typeColor;
+        }
     }
 
     const link = document.createElement('span');
