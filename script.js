@@ -8,11 +8,12 @@ const FILES_PATH = '/files';
 const ROOT_NAME = '/';
 
 // ===========================================
-// CUSTOMIZATION: Colored file extensions
-// When true, file extensions and icons display in their type color
-// Example: "readme.md" shows "readme" in white, ".md" in yellow
+// CUSTOMIZATION: File extension color mode
+// 1 = filename is white, extension is colored (e.g., "readme" white, ".md" yellow)
+// 2 = filename AND extension are both colored
+// 3 = filename AND extension are both white
 // ===========================================
-const COLORED_EXTENSIONS = true;
+const FILE_EXTENSION_COLOR = 1;
 
 // File type colors (matches CSS indicator colors)
 const TYPE_COLORS = {
@@ -183,18 +184,29 @@ function createFileRow(item, isParent = false) {
     // Get the type color for this item
     const typeColor = TYPE_COLORS[typeClass] || TYPE_COLORS.file;
 
-    // Apply colored indicator when COLORED_EXTENSIONS is enabled
-    if (COLORED_EXTENSIONS) {
+    // Apply colored indicator based on mode (modes 1 and 2 use color)
+    if (FILE_EXTENSION_COLOR === 1 || FILE_EXTENSION_COLOR === 2) {
         indicator.style.background = typeColor;
     }
 
     const link = document.createElement('span');
     link.className = 'file-link';
 
-    // Apply colored extension styling when enabled (files only)
-    if (COLORED_EXTENSIONS && !item.isDirectory && item.extension) {
-        const baseName = item.name.slice(0, -(item.extension.length + 1));
-        const extension = '.' + item.extension;
+    // Handle .font folders specially (treat .font as an extension)
+    const isFontFolderItem = isFontFolder(item);
+    const hasExtension = !item.isDirectory && item.extension;
+    const hasFontSuffix = isFontFolderItem && item.name.endsWith('.font');
+
+    if (hasExtension || hasFontSuffix) {
+        // Determine the extension part
+        let baseName, extension;
+        if (hasFontSuffix) {
+            baseName = item.name.slice(0, -5); // Remove ".font"
+            extension = '.font';
+        } else {
+            baseName = item.name.slice(0, -(item.extension.length + 1));
+            extension = '.' + item.extension;
+        }
 
         const baseSpan = document.createElement('span');
         baseSpan.textContent = baseName;
@@ -202,15 +214,27 @@ function createFileRow(item, isParent = false) {
         const extSpan = document.createElement('span');
         extSpan.className = 'file-extension';
         extSpan.textContent = extension;
-        extSpan.style.color = typeColor;
+
+        // Apply colors based on mode
+        if (FILE_EXTENSION_COLOR === 1) {
+            // Mode 1: base white, extension colored
+            extSpan.style.color = typeColor;
+        } else if (FILE_EXTENSION_COLOR === 2) {
+            // Mode 2: both colored
+            baseSpan.style.color = typeColor;
+            extSpan.style.color = typeColor;
+        }
+        // Mode 3: both white (default text color, no style needed)
 
         link.appendChild(baseSpan);
         link.appendChild(extSpan);
     } else {
+        // Folders without .font suffix or files without extension
+        if (FILE_EXTENSION_COLOR === 2 && item.isDirectory) {
+            link.style.color = typeColor;
+        }
         link.textContent = item.name;
     }
-
-    const isFontFolderItem = isFontFolder(item);
 
     link.addEventListener('click', (e) => {
         e.preventDefault();

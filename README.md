@@ -89,18 +89,19 @@ const ROOT_NAME = '/';  // Change to 'files', 'archive', 'home', etc.
 .file-row.font .file-indicator { background: #38bdf8; }
 ```
 
-**Colored file extensions:**
+**File extension color mode:**
 
-Set `COLORED_EXTENSIONS` in `script.js` to display file extensions in their type color:
+Set `FILE_EXTENSION_COLOR` in `script.js` to control how file names are colored:
 
 ```javascript
-const COLORED_EXTENSIONS = true;  // Enable colored extensions
+const FILE_EXTENSION_COLOR = 1;
 ```
 
-When enabled:
-- File names display with the base name in white and extension in the type color
-- Example: `readme.md` shows "readme" in white and ".md" in yellow
-- The file indicator also matches the extension color
+| Mode | Description |
+|------|-------------|
+| `1` | Filename in white, extension in type color (e.g., "readme" white, ".md" yellow) |
+| `2` | Both filename and extension in type color |
+| `3` | Both filename and extension in white |
 
 ---
 
