@@ -194,29 +194,27 @@ function loadMoreItems() {
 
     currentlyShown += itemsToShow.length;
 
-    // Add Load More button or file count
-    if (currentlyShown < allSortedItems.length && isPaginationEnabled) {
+    // Add file count and Load More button container
+    if (allSortedItems.length > 0) {
         const loadMoreContainer = document.createElement('div');
         loadMoreContainer.className = 'load-more-container';
 
-        const loadMoreBtn = document.createElement('button');
-        loadMoreBtn.className = 'load-more-btn';
-        loadMoreBtn.textContent = 'Load More';
-        loadMoreBtn.addEventListener('click', loadMoreItems);
-
-        loadMoreContainer.appendChild(loadMoreBtn);
-        elements.fileList.appendChild(loadMoreContainer);
-    } else if (allSortedItems.length > 0) {
-        // Show file count when all items are displayed
-        const fileCountContainer = document.createElement('div');
-        fileCountContainer.className = 'load-more-container';
-
+        // Always show file count
         const fileCount = document.createElement('span');
         fileCount.className = 'file-count-text';
         fileCount.textContent = `showing ${currentlyShown} out of ${allSortedItems.length}`;
+        loadMoreContainer.appendChild(fileCount);
 
-        fileCountContainer.appendChild(fileCount);
-        elements.fileList.appendChild(fileCountContainer);
+        // Show Load More button if there are more items
+        if (currentlyShown < allSortedItems.length && isPaginationEnabled) {
+            const loadMoreBtn = document.createElement('button');
+            loadMoreBtn.className = 'load-more-btn';
+            loadMoreBtn.textContent = 'Load More';
+            loadMoreBtn.addEventListener('click', loadMoreItems);
+            loadMoreContainer.appendChild(loadMoreBtn);
+        }
+
+        elements.fileList.appendChild(loadMoreContainer);
     }
 }
 

@@ -246,6 +246,10 @@ header {
 .load-more-container {
     padding: 20px 16px;
     margin: 0 -16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
 }
 
 .load-more-btn {
