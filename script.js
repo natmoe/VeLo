@@ -218,13 +218,17 @@ function createFileRow(item, isParent = false) {
         // Apply colors based on mode
         if (FILE_EXTENSION_COLOR === 1) {
             // Mode 1: base white, extension colored
+            baseSpan.style.color = 'var(--text)';
             extSpan.style.color = typeColor;
         } else if (FILE_EXTENSION_COLOR === 2) {
             // Mode 2: both colored
             baseSpan.style.color = typeColor;
             extSpan.style.color = typeColor;
+        } else {
+            // Mode 3: both white
+            baseSpan.style.color = 'var(--text)';
+            extSpan.style.color = 'var(--text)';
         }
-        // Mode 3: both white (default text color, no style needed)
 
         link.appendChild(baseSpan);
         link.appendChild(extSpan);
