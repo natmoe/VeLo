@@ -242,6 +242,39 @@ header {
     color: var(--text-muted);
 }
 
+/* Load More button and file count */
+.load-more-container {
+    padding: 20px 16px;
+    margin: 0 -16px;
+}
+
+.load-more-btn {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: all var(--transition);
+}
+
+.load-more-btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--text-muted);
+    color: var(--text);
+}
+
+.file-count-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+}
+
 .btn {
     background: var(--bg-elevated);
     border: 1px solid var(--border);

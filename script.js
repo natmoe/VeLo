@@ -15,6 +15,13 @@ const ROOT_NAME = '/';
 // ===========================================
 const FILE_EXTENSION_COLOR = 1;
 
+// ===========================================
+// CUSTOMIZATION: Pagination settings
+// PAGE_SIZE = number of files to show initially and per "Load More" click
+// Set to 0 or Infinity to disable pagination (show all files)
+// ===========================================
+const PAGE_SIZE = 10;
+
 // File type colors (matches CSS indicator colors)
 const TYPE_COLORS = {
     folder: 'var(--accent)',
@@ -43,6 +50,10 @@ let currentPath = '';
 let fontFolderFonts = [];
 let currentFontIndex = 0;
 let currentFontFolderPath = '';
+
+// Pagination state
+let allSortedItems = [];
+let currentlyShown = 0;
 
 const elements = {
     fileList: document.getElementById('file-list'),
@@ -146,7 +157,7 @@ function renderFileList(data) {
         return;
     }
 
-    const sortedItems = [...data.items].sort((a, b) => {
+    allSortedItems = [...data.items].sort((a, b) => {
         const aIsText = FILE_TYPES.text.includes(a.extension) || FILE_TYPES.code.includes(a.extension);
         const bIsText = FILE_TYPES.text.includes(b.extension) || FILE_TYPES.code.includes(b.extension);
 
@@ -159,9 +170,54 @@ function renderFileList(data) {
         return a.name.localeCompare(b.name);
     });
 
-    sortedItems.forEach(item => {
+    // Reset pagination state
+    currentlyShown = 0;
+
+    // Show initial batch
+    loadMoreItems();
+}
+
+function loadMoreItems() {
+    const isPaginationEnabled = PAGE_SIZE > 0 && PAGE_SIZE !== Infinity;
+    const itemsToShow = isPaginationEnabled
+        ? allSortedItems.slice(currentlyShown, currentlyShown + PAGE_SIZE)
+        : allSortedItems.slice(currentlyShown);
+
+    // Remove existing load-more button and file-count if present
+    const existingLoadMore = document.querySelector('.load-more-container');
+    if (existingLoadMore) existingLoadMore.remove();
+
+    // Add new items
+    itemsToShow.forEach(item => {
         elements.fileList.appendChild(createFileRow(item));
     });
+
+    currentlyShown += itemsToShow.length;
+
+    // Add Load More button or file count
+    if (currentlyShown < allSortedItems.length && isPaginationEnabled) {
+        const loadMoreContainer = document.createElement('div');
+        loadMoreContainer.className = 'load-more-container';
+
+        const loadMoreBtn = document.createElement('button');
+        loadMoreBtn.className = 'load-more-btn';
+        loadMoreBtn.textContent = 'Load More';
+        loadMoreBtn.addEventListener('click', loadMoreItems);
+
+        loadMoreContainer.appendChild(loadMoreBtn);
+        elements.fileList.appendChild(loadMoreContainer);
+    } else if (allSortedItems.length > 0) {
+        // Show file count when all items are displayed
+        const fileCountContainer = document.createElement('div');
+        fileCountContainer.className = 'load-more-container';
+
+        const fileCount = document.createElement('span');
+        fileCount.className = 'file-count-text';
+        fileCount.textContent = `showing ${currentlyShown} out of ${allSortedItems.length}`;
+
+        fileCountContainer.appendChild(fileCount);
+        elements.fileList.appendChild(fileCountContainer);
+    }
 }
 
 function createFileRow(item, isParent = false) {
