@@ -1,4 +1,6 @@
-# VeLo
+<p align="center">
+  <img src="https://velo.philia.moe/assets/velo.png" alt="VeLo" width="200">
+</p>
 
 **A minimal, self-hosted file browser**
 
