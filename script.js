@@ -261,11 +261,10 @@ function createFileRow(item, isParent = false) {
     // Create indicator - either SVG icon or colored square
     let indicator;
     if (iconFile) {
-        indicator = document.createElement('img');
+        indicator = document.createElement('div');
         indicator.className = 'file-icon';
-        indicator.src = `${ICONS_PATH}/${iconFile}`;
-        indicator.alt = '';
-        // Apply color tinting via CSS filter (set as CSS variable)
+        // Use CSS mask for colorization - icon takes the type color
+        indicator.style.setProperty('--icon-src', `url(${ICONS_PATH}/${iconFile})`);
         indicator.style.setProperty('--icon-color', typeColor);
     } else {
         indicator = document.createElement('span');

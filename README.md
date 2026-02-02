@@ -15,11 +15,11 @@
 
 ## Features
 
-- **Browsing** — Navigate folders in a nice text-based view.
-- **Media** — Images and videos have a nice previe and a gallery-based view.
-- **Font Previews** — To show multiple versions of a font, put them in a folder ending in `.font` to have them render as a collective preview.
+- **Browsing** — Navigate folders with breadcrumbs and file stats
+- **Media Lightbox** — Preview images and videos in a gallery view
+- **Font Previews** — Folders ending in `.font` render as interactive font previews
 - **Markdown Reader** — Inline rendering of `.md` files
-- **Zip Downloads** — Download entire font folders as a zip
+- **Pagination** — Load files incrementally with "Load More"
 
 ---
 
@@ -32,115 +32,41 @@ npm install
 npm start
 ```
 
-Open `http://localhost:3000` and add your files to the `files/` folder.
-
----
-
-## Deployment
-
-### Any Node.js Host
-
-```bash
-npm install
-npm start
-```
-
-Works on **Render**, **Railway**, **Fly.io**, **DigitalOcean**, or any VPS.
-
-### Vercel
-
-```bash
-vercel deploy
-```
-
-### Docker
-
-```dockerfile
-FROM node:20-alpine
-WORKDIR /app
-COPY . .
-RUN npm install
-EXPOSE 3000
-CMD ["npm", "start"]
-```
+Open `http://localhost:3000`. Add files to `files/`.
 
 ---
 
 ## Customization
 
-Edit the CSS variables at the top of `style.css`:
+All options are at the top of `script.js`:
+
+| Option | Description |
+|--------|-------------|
+| `ROOT_NAME` | Breadcrumb root label (`'/'`, `'files'`, etc.) |
+| `FILE_EXTENSION_COLOR` | `1` = extension colored, `2` = both colored, `3` = both white |
+| `PAGE_SIZE` | Files per page (`10` default, `0` = show all) |
+| `TYPE_COLORS` | Color per file type |
+| `TYPE_ICONS` | SVG icon per file type (set to `null` for colored square) |
+| `ICONS_PATH` | Path to icon SVGs (`/icons` default) |
+
+**Theme colors** in `style.css`:
 
 ```css
 :root {
-    --bg: #0c0c0c;           /* Background */
-    --accent: #6ee7b7;       /* Accent color */
-    --text: #f0f0f0;         /* Text color */
+    --bg: #0c0c0c;
+    --accent: #6ee7b7;
+    --text: #f0f0f0;
 }
 ```
 
-**Root folder name:**
-
-Edit the `ROOT_NAME` constant at the top of `script.js` to customize how the root breadcrumb appears:
-
-```javascript
-const ROOT_NAME = '/';  // Change to 'files', 'archive', 'home', etc.
-```
-
-**File type indicator colors:**
-
-```css
-.file-row.folder .file-indicator { background: var(--accent); }
-.file-row.image .file-indicator { background: #f472b6; }
-.file-row.video .file-indicator { background: #a78bfa; }
-.file-row.font .file-indicator { background: #38bdf8; }
-```
-
-**File extension color mode:**
-
-Set `FILE_EXTENSION_COLOR` in `script.js` to control how file names are colored:
-
-```javascript
-const FILE_EXTENSION_COLOR = 1;
-```
-
-| Mode | Description |
-|------|-------------|
-| `1` | Filename in white, extension in type color (e.g., "readme" white, ".md" yellow) |
-| `2` | Both filename and extension in type color |
-| `3` | Both filename and extension in white |
-
 ---
 
-## Font Folders
+## Deployment
 
-Create folders ending in `.font` to enable the font preview feature:
+Works on **Vercel**, **Render**, **Railway**, **Fly.io**, or any Node.js host.
 
-```
-files/
-└── MyFont.font/
-    ├── MyFont-Regular.otf
-    ├── MyFont-Bold.otf
-    └── MyFont-Italic.otf
-```
-
-Click to open an interactive preview with:
-- Sample text at multiple sizes
-- Slider to switch between styles
-- Download single font or zip all
-
----
-
-## Project Structure
-
-```
-├── server.js       # Express server
-├── index.html      # Main page
-├── script.js       # Frontend logic
-├── style.css       # Styles
-├── files/          # Your files go here
-├── package.json
-├── vercel.json     # Vercel config (optional)
-└── LICENSE
+```bash
+npm install && npm start
 ```
 
 ---
