@@ -38,12 +38,48 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 body {
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-sans);
     line-height: 1.6;
     min-height: 100vh;
+    animation: fadeIn 0.3s ease-out;
 }
 
 a {
@@ -133,12 +169,18 @@ header {
     padding: 12px 16px;
     margin: 0 -16px;
     border-radius: var(--radius);
-    transition: background var(--transition);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     align-items: center;
+    animation: fadeInUp 0.4s ease-out backwards;
 }
 
 .file-row:hover {
     background: var(--bg-hover);
+    transform: translateX(4px);
+}
+
+.file-row:hover .file-icon {
+    transform: scale(1.15);
 }
 
 .file-name {
@@ -215,6 +257,7 @@ header {
     mask-repeat: no-repeat;
     -webkit-mask-position: center;
     mask-position: center;
+    transition: transform 0.2s ease;
 }
 
 .file-link {
@@ -373,6 +416,12 @@ header {
     align-items: center;
     gap: 24px;
     pointer-events: auto;
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lightbox.active .lightbox-content {
+    transform: scale(1);
 }
 
 .lightbox-content img,
@@ -436,6 +485,12 @@ header {
     display: flex;
     flex-direction: column;
     box-shadow: var(--shadow-lg);
+    transform: translateY(20px) scale(0.98);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reader.active .reader-window {
+    transform: translateY(0) scale(1);
 }
 
 .reader-header {
@@ -651,6 +706,12 @@ header {
     display: flex;
     flex-direction: column;
     box-shadow: var(--shadow-lg);
+    transform: translateY(20px) scale(0.98);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.font-viewer.active .font-viewer-window {
+    transform: translateY(0) scale(1);
 }
 
 .font-viewer-header {
