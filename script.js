@@ -22,7 +22,6 @@ const FILE_EXTENSION_COLOR = 1;
 // ===========================================
 const PAGE_SIZE = 10;
 
-// File type colors (matches CSS indicator colors)
 const TYPE_COLORS = {
     folder: 'var(--accent)',
     fontFolder: '#38bdf8',
@@ -36,6 +35,13 @@ const TYPE_COLORS = {
     document: '#f87171',
     file: 'var(--text-muted)'
 };
+
+// ===========================================
+// CUSTOMIZATION: Animation settings
+// true = enable animations
+// false = disable animations
+// ===========================================
+const ANIMATIONS = true;
 
 // ===========================================
 // CUSTOMIZATION: Icon settings
@@ -61,8 +67,6 @@ const TYPE_ICONS = {
     file: 'document.svg'
 };
 
-// Override icons for specific file extensions (optional)
-// Example: { 'mp3': 'audio.svg', 'pdf': 'pdf.svg', 'zip': 'archive.svg' }
 const EXTENSION_ICONS = {
     // Add your custom extension icons here
 };
@@ -81,9 +85,12 @@ let fontFolderFonts = [];
 let currentFontIndex = 0;
 let currentFontFolderPath = '';
 
-// Pagination state
 let allSortedItems = [];
 let currentlyShown = 0;
+
+let navigationDirection = 'forward';
+let previousPath = '';
+let nextDirection = null;
 
 const elements = {
     fileList: document.getElementById('file-list'),
@@ -111,6 +118,10 @@ const elements = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    if (!ANIMATIONS) {
+        document.body.classList.add('no-animations');
+    }
+
     currentPath = decodeURIComponent(window.location.hash.slice(1));
     loadDirectory(currentPath);
 
@@ -135,6 +146,29 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function loadDirectory(path) {
+    if (nextDirection) {
+        navigationDirection = nextDirection;
+        nextDirection = null;
+    } else {
+        const prev = previousPath.endsWith('/') ? previousPath : previousPath + '/';
+        const curr = path.endsWith('/') ? path : path + '/';
+
+        const isGoingBack = prev.startsWith(curr) && path !== previousPath;
+        navigationDirection = isGoingBack ? 'back' : 'forward';
+    }
+
+    const existingRows = elements.fileList.querySelectorAll('.file-row');
+    if (ANIMATIONS && existingRows.length > 0) {
+        const exitClass = navigationDirection === 'back' ? 'exiting-back' : 'exiting';
+        existingRows.forEach((row, index) => {
+            row.style.animationDelay = `${index * 15}ms`;
+            row.classList.add(exitClass);
+        });
+        await new Promise(resolve => setTimeout(resolve, Math.min(existingRows.length * 15 + 200, 400)));
+    }
+
+    previousPath = path;
+
     elements.fileList.innerHTML = '<div class="loading">Loading...</div>';
 
     try {
@@ -171,10 +205,9 @@ function getTypeClass(item) {
 function renderFileList(data) {
     elements.fileList.innerHTML = '';
 
-    // Only show ".." when we're in a subdirectory (path is not empty)
-    if (data.path && data.path !== '') {
+    if (data.path && data.path !== '' && data.path !== '/' && data.path !== '.') {
         const parentRow = createFileRow({
-            name: '..',
+            name: 'return',
             path: data.parent || '',
             isDirectory: true,
             type: 'folder'
@@ -213,29 +246,32 @@ function loadMoreItems() {
         ? allSortedItems.slice(currentlyShown, currentlyShown + PAGE_SIZE)
         : allSortedItems.slice(currentlyShown);
 
-    // Remove existing load-more button and file-count if present
     const existingLoadMore = document.querySelector('.load-more-container');
     if (existingLoadMore) existingLoadMore.remove();
 
-    // Add new items
-    itemsToShow.forEach(item => {
-        elements.fileList.appendChild(createFileRow(item));
+    const startIndex = currentlyShown;
+    itemsToShow.forEach((item, index) => {
+        const row = createFileRow(item);
+        if (ANIMATIONS) {
+            row.style.animationDelay = `${(startIndex + index) * 30}ms`;
+            if (navigationDirection === 'back') {
+                row.classList.add('entering-back');
+            }
+        }
+        elements.fileList.appendChild(row);
     });
 
     currentlyShown += itemsToShow.length;
 
-    // Add file count and Load More button container
     if (allSortedItems.length > 0) {
         const loadMoreContainer = document.createElement('div');
         loadMoreContainer.className = 'load-more-container';
 
-        // Always show file count
         const fileCount = document.createElement('span');
         fileCount.className = 'file-count-text';
         fileCount.textContent = `showing ${currentlyShown} out of ${allSortedItems.length}`;
         loadMoreContainer.appendChild(fileCount);
 
-        // Show Load More button if there are more items
         if (currentlyShown < allSortedItems.length && isPaginationEnabled) {
             const loadMoreBtn = document.createElement('button');
             loadMoreBtn.className = 'load-more-btn';
@@ -267,18 +303,21 @@ function createFileRow(item, isParent = false) {
     // Check for extension-specific icon first, then fall back to type icon
     const iconFile = (item.extension && EXTENSION_ICONS[item.extension]) || TYPE_ICONS[typeClass];
 
-    // Create indicator - either SVG icon or colored square
     let indicator;
-    if (iconFile) {
+
+    if (isParent && item.name === 'return') {
+        indicator = document.createElement('div');
+        indicator.className = 'file-icon back';
+        indicator.style.setProperty('--icon-src', `url(${ICONS_PATH}/back.svg)`);
+        indicator.style.setProperty('--icon-color', 'var(--text)');
+    } else if (iconFile) {
         indicator = document.createElement('div');
         indicator.className = 'file-icon';
-        // Use CSS mask for colorization - icon takes the type color
         indicator.style.setProperty('--icon-src', `url(${ICONS_PATH}/${iconFile})`);
         indicator.style.setProperty('--icon-color', typeColor);
     } else {
         indicator = document.createElement('span');
         indicator.className = 'file-indicator';
-        // Apply colored indicator based on mode (modes 1 and 2 use color)
         if (FILE_EXTENSION_COLOR === 1 || FILE_EXTENSION_COLOR === 2) {
             indicator.style.background = typeColor;
         }
@@ -287,7 +326,6 @@ function createFileRow(item, isParent = false) {
     const link = document.createElement('span');
     link.className = 'file-link';
 
-    // Handle .font folders specially (treat .font as an extension)
     const isFontFolderItem = isFontFolder(item);
     const hasExtension = !item.isDirectory && item.extension;
     const hasFontSuffix = isFontFolderItem && item.name.endsWith('.font');
@@ -310,17 +348,13 @@ function createFileRow(item, isParent = false) {
         extSpan.className = 'file-extension';
         extSpan.textContent = extension;
 
-        // Apply colors based on mode
         if (FILE_EXTENSION_COLOR === 1) {
-            // Mode 1: base white, extension colored
             baseSpan.style.color = 'var(--text)';
             extSpan.style.color = typeColor;
         } else if (FILE_EXTENSION_COLOR === 2) {
-            // Mode 2: both colored
             baseSpan.style.color = typeColor;
             extSpan.style.color = typeColor;
         } else {
-            // Mode 3: both white
             baseSpan.style.color = 'var(--text)';
             extSpan.style.color = 'var(--text)';
         }
@@ -328,8 +362,9 @@ function createFileRow(item, isParent = false) {
         link.appendChild(baseSpan);
         link.appendChild(extSpan);
     } else {
-        // Folders without .font suffix or files without extension
-        if (FILE_EXTENSION_COLOR === 2 && item.isDirectory) {
+        if (item.name === 'return') {
+            link.style.color = 'var(--text)';
+        } else if (FILE_EXTENSION_COLOR === 2 && item.isDirectory) {
             link.style.color = typeColor;
         }
         link.textContent = item.name;
@@ -342,7 +377,12 @@ function createFileRow(item, isParent = false) {
         if (isFontFolderItem) {
             openFontViewer(item);
         } else if (item.isDirectory) {
-            navigateTo(item.path);
+            // Use navigateBack for parent folder (..)
+            if (item.name === 'return' || item.name === '..') {
+                navigateBack(item.path);
+            } else {
+                navigateTo(item.path);
+            }
         } else if (isImage || isVideo) {
             openLightbox(item);
         } else if (isText) {
@@ -381,7 +421,7 @@ function renderBreadcrumb(path) {
     const root = document.createElement('span');
     root.className = 'crumb' + (!path ? ' active' : '') + (ROOT_NAME === '/' ? ' no-separator' : '');
     root.textContent = ROOT_NAME;
-    root.addEventListener('click', () => navigateTo(''));
+    root.addEventListener('click', () => navigateBack(''));
     elements.breadcrumb.appendChild(root);
 
     if (path) {
@@ -394,7 +434,9 @@ function renderBreadcrumb(path) {
             crumb.className = 'crumb' + (i === parts.length - 1 ? ' active' : '');
             crumb.textContent = part;
             const navPath = accumulated;
-            crumb.addEventListener('click', () => navigateTo(navPath));
+            if (i < parts.length - 1) {
+                crumb.addEventListener('click', () => navigateBack(navPath));
+            }
             elements.breadcrumb.appendChild(crumb);
         });
     }
@@ -411,6 +453,11 @@ function renderStats(stats) {
     if (stats.files > 0) parts.push(`${stats.files} file${stats.files !== 1 ? 's' : ''}`);
     if (stats.totalSize > 0) parts.push(formatSize(stats.totalSize));
     elements.stats.textContent = parts.join(' · ');
+}
+
+function navigateBack(path) {
+    nextDirection = 'back';
+    navigateTo(path);
 }
 
 function navigateTo(path) {

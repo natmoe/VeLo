@@ -38,12 +38,101 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateX(-12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes fadeOutDown {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(12px);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOutLeft {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-12px);
+    }
+}
+
+.file-row.exiting {
+    animation: fadeOutDown 0.2s ease-out forwards;
+}
+
+.file-row.exiting-back {
+    animation: fadeOutLeft 0.2s ease-out forwards;
+}
+
+.file-row.entering-back {
+    animation: fadeInRight 0.4s ease-out backwards;
+}
+
 body {
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-sans);
     line-height: 1.6;
     min-height: 100vh;
+    animation: fadeIn 0.3s ease-out;
+}
+
+body.no-animations * {
+    animation: none !important;
+    transition: none !important;
 }
 
 a {
@@ -133,12 +222,18 @@ header {
     padding: 12px 16px;
     margin: 0 -16px;
     border-radius: var(--radius);
-    transition: background var(--transition);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     align-items: center;
+    animation: fadeInUp 0.4s ease-out backwards;
 }
 
 .file-row:hover {
     background: var(--bg-hover);
+    transform: translateX(4px);
+}
+
+.file-row:hover .file-icon {
+    transform: scale(1.15);
 }
 
 .file-name {
@@ -200,7 +295,6 @@ header {
     background: var(--text-muted);
 }
 
-/* SVG file icons - uses mask to colorize with file type color */
 .file-icon {
     width: 16px;
     height: 16px;
@@ -215,6 +309,12 @@ header {
     mask-repeat: no-repeat;
     -webkit-mask-position: center;
     mask-position: center;
+    transition: transform 0.2s ease;
+}
+
+.file-icon.back {
+    filter: brightness(0) invert(1);
+    opacity: 0.7;
 }
 
 .file-link {
@@ -259,7 +359,6 @@ header {
     color: var(--text-muted);
 }
 
-/* Load More button and file count */
 .load-more-container {
     padding: 20px 16px;
     margin: 0 -16px;
