@@ -2,10 +2,14 @@
   <img src="https://velo.philia.moe/assets/velo.png" alt="VeLo" width="200">
 </p>
 
-**A minimal, self-hosted file browser**
+<p align="center">
+  <strong>A minimal, self-hosted file browser</strong>
+</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Node.js](https://img.shields.io/badge/Node.js-24.x-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT"></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-24.x-339933?logo=node.js&logoColor=white" alt="Node.js"></a>
+</p>
 
 ---
 
