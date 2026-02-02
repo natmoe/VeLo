@@ -7,6 +7,28 @@ const FILES_PATH = '/files';
 // ===========================================
 const ROOT_NAME = '/';
 
+// ===========================================
+// CUSTOMIZATION: Colored file extensions
+// When true, file extensions and icons display in their type color
+// Example: "readme.md" shows "readme" in white, ".md" in yellow
+// ===========================================
+const COLORED_EXTENSIONS = true;
+
+// File type colors (matches CSS indicator colors)
+const TYPE_COLORS = {
+    folder: 'var(--accent)',
+    fontFolder: '#38bdf8',
+    image: '#f472b6',
+    video: '#a78bfa',
+    audio: '#facc15',
+    font: '#38bdf8',
+    text: '#facc15',
+    code: '#34d399',
+    archive: '#fb923c',
+    document: '#f87171',
+    file: 'var(--text-muted)'
+};
+
 const FILE_TYPES = {
     image: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico', 'avif'],
     video: ['mp4', 'webm', 'mov', 'ogv'],
@@ -158,9 +180,35 @@ function createFileRow(item, isParent = false) {
     const indicator = document.createElement('span');
     indicator.className = 'file-indicator';
 
+    // Get the type color for this item
+    const typeColor = TYPE_COLORS[typeClass] || TYPE_COLORS.file;
+
+    // Apply colored indicator when COLORED_EXTENSIONS is enabled
+    if (COLORED_EXTENSIONS) {
+        indicator.style.background = typeColor;
+    }
+
     const link = document.createElement('span');
     link.className = 'file-link';
-    link.textContent = item.name;
+
+    // Apply colored extension styling when enabled (files only)
+    if (COLORED_EXTENSIONS && !item.isDirectory && item.extension) {
+        const baseName = item.name.slice(0, -(item.extension.length + 1));
+        const extension = '.' + item.extension;
+
+        const baseSpan = document.createElement('span');
+        baseSpan.textContent = baseName;
+
+        const extSpan = document.createElement('span');
+        extSpan.className = 'file-extension';
+        extSpan.textContent = extension;
+        extSpan.style.color = typeColor;
+
+        link.appendChild(baseSpan);
+        link.appendChild(extSpan);
+    } else {
+        link.textContent = item.name;
+    }
 
     const isFontFolderItem = isFontFolder(item);
 
