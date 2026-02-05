@@ -1,4 +1,31 @@
 /* ===========================================
+   CUSTOM FONTS
+   =========================================== */
+@font-face {
+    font-family: 'LocalFont';
+    src: url('/assets/font/light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'LocalFont';
+    src: url('/assets/font/regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'LocalFont';
+    src: url('/assets/font/bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ===========================================
    CUSTOMIZE COLORS HERE
    =========================================== */
 :root {
@@ -12,8 +39,8 @@
     --text-muted: #555;
     --accent: #6ee7b7;
     --accent-dim: rgba(110, 231, 183, 0.15);
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+    --font-sans: 'LocalFont', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', monospace;
     --radius: 8px;
     --radius-sm: 4px;
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);

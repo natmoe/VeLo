@@ -48,6 +48,7 @@ All options are at the top of `script.js`:
 | `TYPE_COLORS` | Color per file type category |
 | `TYPE_ICONS` | Default SVG icon per file type (set to `null` for colored square) |
 | `EXTENSION_ICONS` | Override icons for specific extensions (e.g., `{ 'pdf': 'pdf.svg' }`) |
+| `ICONS_PATH` | Path to SVG icons (`'/assets/icons'` default) |
 
 **Theme colors** in `style.css`:
 
@@ -58,6 +59,8 @@ All options are at the top of `script.js`:
     --text: #f0f0f0;
 }
 ```
+
+**Font assets** in `/assets/font/` (light.otf, regular.otf, bold.otf)
 
 ---
 

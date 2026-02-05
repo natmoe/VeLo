@@ -50,7 +50,7 @@ const ANIMATIONS = true;
 // EXTENSION_ICONS = override icon for specific file extensions
 // Set any icon to null to use the colored square fallback
 // ===========================================
-const ICONS_PATH = '/icons';
+const ICONS_PATH = '/assets/icons';
 
 // Default icons by file type category
 const TYPE_ICONS = {
