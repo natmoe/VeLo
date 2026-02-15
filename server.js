@@ -114,7 +114,11 @@ app.get('/api/zip', (req, res) => {
         const archive = archiver('zip', { zlib: { level: 9 } });
         archive.on('error', (err) => {
             console.error('Archive error:', err);
-            res.status(500).json({ error: 'Failed to create archive' });
+            if (!res.headersSent) {
+                res.status(500).json({ error: 'Failed to create archive' });
+            } else {
+                res.destroy();
+            }
         });
 
         archive.pipe(res);

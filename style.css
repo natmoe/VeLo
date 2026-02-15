@@ -951,20 +951,6 @@ header {
         display: none;
     }
 
-    .lightbox-nav {
-        width: 36px;
-        height: 36px;
-        font-size: 16px;
-    }
-
-    .lightbox-nav.prev {
-        left: 12px;
-    }
-
-    .lightbox-nav.next {
-        right: 12px;
-    }
-
     .reader-content {
         padding: 20px;
     }

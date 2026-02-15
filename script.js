@@ -233,10 +233,7 @@ function renderFileList(data) {
         return a.name.localeCompare(b.name);
     });
 
-    // Reset pagination state
     currentlyShown = 0;
-
-    // Show initial batch
     loadMoreItems();
 }
 
@@ -298,9 +295,7 @@ function createFileRow(item, isParent = false) {
     const nameCell = document.createElement('div');
     nameCell.className = 'file-name';
 
-    // Get the type color and icon for this item
     const typeColor = TYPE_COLORS[typeClass] || TYPE_COLORS.file;
-    // Check for extension-specific icon first, then fall back to type icon
     const iconFile = (item.extension && EXTENSION_ICONS[item.extension]) || TYPE_ICONS[typeClass];
 
     let indicator;
@@ -331,7 +326,6 @@ function createFileRow(item, isParent = false) {
     const hasFontSuffix = isFontFolderItem && item.name.endsWith('.font');
 
     if (hasExtension || hasFontSuffix) {
-        // Determine the extension part
         let baseName, extension;
         if (hasFontSuffix) {
             baseName = item.name.slice(0, -5); // Remove ".font"
@@ -377,7 +371,6 @@ function createFileRow(item, isParent = false) {
         if (isFontFolderItem) {
             openFontViewer(item);
         } else if (item.isDirectory) {
-            // Use navigateBack for parent folder (..)
             if (item.name === 'return' || item.name === '..') {
                 navigateBack(item.path);
             } else {
@@ -494,8 +487,6 @@ function closeLightbox() {
     }, 250);
 }
 
-
-
 async function openReader(item) {
     const url = `${FILES_PATH}/${item.path}`;
 
@@ -538,8 +529,8 @@ function parseMarkdown(text) {
         .replace(/\*(.+?)\*/g, '<em>$1</em>')
         .replace(/__(.+?)__/g, '<strong>$1</strong>')
         .replace(/_(.+?)_/g, '<em>$1</em>')
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
         .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
         .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
         .replace(/^---$/gm, '<hr>')
         .replace(/^[\-\*] (.+)$/gm, '<li>$1</li>')
